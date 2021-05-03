@@ -1,3 +1,4 @@
+function load_fonts_Mangas(){
     aux.Fonts['Manga'] = [
         {
             Nome:'MangaHost',
@@ -399,3 +400,4 @@
             }
         }
     ];
+}

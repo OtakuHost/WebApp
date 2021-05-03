@@ -108,8 +108,8 @@ $(document).ready(async function(){
     });
     
     //Carregar Fontes
-    $.getScript("https://cdn.jsdelivr.net/gh/otakuhostapp/otakuhost@master/AnimesFontes.js");
-    $.getScript("https://cdn.jsdelivr.net/gh/otakuhostapp/otakuhost@master/MangasFontes.js");
+    load_fonts_Mangas();
+    load_fonts_Animes();
     
     screen('lancamentos');
     favoritos('update');

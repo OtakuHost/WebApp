@@ -1,5 +1,3 @@
-//Variavel usada para obter uma resposta
-//file:///android_asset/index.html
 aux.call_result = null;
 aux.Screen = new Array();
 (aux.Screen).push('lancamentos');

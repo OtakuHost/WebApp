@@ -1,4 +1,7 @@
-function(){
+'use strict';
+var aux = new Object();
+//Variavel usada para obter uma resposta
+//file:///android_asset/index.html
 aux.call_result = null;
 aux.Screen = new Array();
 (aux.Screen).push('lancamentos');
@@ -9,15 +12,26 @@ aux.AniManIndex_Fav = null;
 aux.Pag = 0;
 aux.WebPlayer = false;
 aux.FireBase = null;
+
+//Fontes de animes e mangás
 aux.Fonts = new Object();
 aux.AniManSource = new Object();
+
+//Fontes de videos
 aux.FontsVids = new Object();
+
+
+//Lançamentos
 aux.inicial = new Object();
 aux.inicial['Manga'] = new Array();
 aux.inicial['Anime'] = new Array();
 aux.BibliotecaIdioma = new Object();
+
+//Anuncios
 aux.InterstitialTime = 0;
 aux.InterstitialHtml = "";
+
+//Configuração de idiomas
 aux.Bandeiras = {
     "PT-Br":"🇧🇷",
     "En-US":"🇱🇷"
@@ -26,15 +40,29 @@ aux.Generos = {
     "PT-Br":['Aventura','Escolar','Ecchi','Esporte','Comedia','Drama','Fantasia','Harem','Mecha','Shoujo','Seinen','Shounen','Romance','Terror'],
     "En-US":['Adventure', 'School', 'Ecchi', 'Sport', 'Comedy', 'Drama', 'Fantasy', 'Harem', 'Mecha', 'Shoujo', 'Seinen', 'Shounen' , 'Romance ','Horror']
 };
+
+//inject
 aux.Biblioteca = null;
 aux.EpTratamento = [' ', ':','-'];
+/*
+    - CONTROLADORES DE CHAMADA AO SISTEMA
+*/
+//1 - Caso estejamos esperando uma chamada async do sistema, devemos esperar que ela termine para que possamos entrar.
 aux.android_sinaleiro = true;
+//Quais elementos de chamada devemos exibir modal de loading?
 aux.android_callModal = ['ajax'];
+//Chamada não Async, save_file_manga ira chamar outra função que se tornara 'recursiva'
 aux.android_callIgnore = ['save_file_manga','assistir','open_link','exit','download','ads','analytics','interstitial_show','interstitial_close','inject'];
+//bloqueador de paginação, ele vira true somente em 'generos' e 'pesquisa'
 aux.PaginacaoDetectCheck = false;
+
+//Controles de download
 aux.DownloadsConfig = new Object();
+//Usuario pode pausar todos downloads
 aux.DownloadsConfig.Farol = true;
+//Controle sobre requisição de download
 aux.DownloadsConfig.Request = false;
+//File, (Nome,Capitulo,Sources)
 aux.DownloadsConfig.Fila = new Array();
 
 aux.Data = new Date();
@@ -78,16 +106,10 @@ $(document).ready(async function(){
             $(this).remove();
         });
     });
-    WebApp.Ajax('https://raw.githubusercontent.com/otakuhostapp/otakuhost/master/AnimesFontes.js',''+async function(Code,Result){
-        console.log("Carregando dados..... Resposta: "+Code);
-        eval(Result);
-        
-    });
-    WebApp.Ajax('https://raw.githubusercontent.com/otakuhostapp/otakuhost/master/MangasFontes.js',''+async function(Code,Result){
-        console.log("Carregando dados..... Resposta: "+Code);
-        eval(Result);
-        console.log("Carregando dados..... OK");
-    });
+    
+    //Carregar Fontes
+    load_fonts_Mangas();
+    load_fonts_Animes();
     
     screen('lancamentos');
     favoritos('update');
@@ -100,9 +122,13 @@ $(document).ready(async function(){
             return null;
         }
     }
+   
+    //Carregar dados de Download, caso usuario tenha fechado app sem terminar todos download'
     if(localStorage.getItem("DownloadsFila")!=null){
         aux.DownloadsConfig.Fila = JSON.parse(localStorage.getItem("DownloadsFila"));
     }
+    
+    //Controlador de rolagem de paginas generos
     $("#genero").scroll(async function() {
         if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
             await generos_pesquisa(aux.Pag+1);
@@ -112,20 +138,30 @@ $(document).ready(async function(){
     $("#genero").on('click', 'input[type="checkbox"]', function() {      
         $('input[type="checkbox"]').not(this).prop('checked', false);      
     });
+
+    //Controlador de rolagem de paginas pesquisa
     $("#pesquisa").scroll(async function() {
         if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight-1) {
             await pesquisa(aux.Pag+1);
         }
     });
+
+    //Capturar erros
     $.Deferred.exceptionHook = function (err, stackTrace) {
+        // 'err' is what you throw in your deferred's catch.
         //$('.modal').modal('close');
+        //alert('J'+err);
     }
+
+    //Exibir fontes para selecionar. Manga
     $("#list_MangaSources").html(`<option value="null" selected>Mangá</option>`);
     for(let cont=0;cont<(aux.Fonts['Manga']).length;cont++){
         $("#list_MangaSources").append(`
             <option value="${cont}">${aux.Bandeiras[aux.Fonts['Manga'][cont].Idioma]} ${aux.Fonts['Manga'][cont].Nome}</option>
         `);
     }
+
+    //Exibir fontes para selecionar. Anime
     $("#list_AnimesSources").html(`<option value="null" selected>Anime</option>`);
     for(let cont=0;cont<(aux.Fonts['Anime']).length;cont++){
         $("#list_AnimesSources").append(`
@@ -154,6 +190,8 @@ $(document).ready(async function(){
             $("#nova_versao").modal("open");
         }
     });
+
+    //WebPlayer email
     if(localStorage.getItem("Email")!=null){
         $("#email_webPlayer").val(localStorage.getItem("Email"));
         $("#web_PlayerModal p").html(`<b>Codigo</b>: `+localStorage.getItem("Codigo"));
@@ -234,10 +272,14 @@ async function noticias(){
     });
     
 }
+
+//Controlador de anuncio full screen
 async function interstitialShow(){
     console.log("Call intensival");
     WebApp.Ads_Intensival();
 }
+
+//Atualiza o sistema de visualização de download
 async function update_download_view(){
     $("#SlideDownload").html("");
     for(let cont=0;cont<(aux.DownloadsConfig.Fila).length;cont++){
@@ -260,6 +302,8 @@ async function update_download_view(){
         `);
     }
 }
+
+//Le ou deleta capituloda biblioteca
 async function biblioteca_cap(Acao){
     if(Acao=='read'){
         aux.MangasSources = await WebApp.GetFiles(`${aux.Pasta}/mangas/${aux.AniMan}/${$("#biblioteca_caps select").val()}`);
@@ -271,12 +315,15 @@ async function biblioteca_cap(Acao){
         for(let cont=0;cont<(aux.MangasSources).length;cont++){
             $("#leitor").append(`<img src="${aux.MangasSources[cont]}">`);
         }
+        //WebApp.StatusBar('false');
     }else{
         let check = await WebApp.DeleteDir(`${aux.Pasta}/mangas/${aux.AniMan}/${$("#biblioteca_caps select").val()}/`);
         biblioteca_caps(aux.AniMan);
     }
 
 }
+
+//Exibe capitulos existentes na biblioteca
 async function biblioteca_caps(Manga){
     let caps = await WebApp.GetFiles(aux.Pasta+'/mangas/'+Manga);
     $("#biblioteca_caps select .cap").html("");
@@ -299,6 +346,8 @@ async function biblioteca_caps(Manga){
         await biblioteca();
     }
 }
+
+//Exibe a biblioteca de mangás
 async function biblioteca(){
     $("#biblioteca ul").html("");
     for(let cont=0;cont<(aux.Biblioteca).length;cont++){
@@ -318,6 +367,8 @@ async function biblioteca(){
     screen('biblioteca');
     cover_height();
 }
+
+//Atualiza biblioteca
 async function update_biblioteca(){
     aux.Biblioteca = await WebApp.GetFiles(aux.Pasta+'/mangas');
     console.log(aux.Biblioteca);
@@ -334,6 +385,13 @@ function android_process_downloads_mangas(){
     aux.DownloadsConfig.Request = false;
     process_downloads_mangas(null,null);
 }
+
+//Sistema de processamento de download.
+/*
+    add - Adiciona capitulo a fila de download,(Nome,CAP01,Sources)
+    devar - Deleta da pagina de download, (Nome,CAP01)
+    null - Processa download, (null)
+*/
 async function process_downloads_mangas(Acao,Dado){
     if(Acao=='add'){
         for(let cont=0;cont<(aux.DownloadsConfig.Fila).length;cont++){
@@ -345,6 +403,7 @@ async function process_downloads_mangas(Acao,Dado){
         (aux.DownloadsConfig.Fila).push(Dado);
         M.toast({html:'Adicionado a fila!'});
         await update_download_view();
+        //Não existe downlod's sendo processado
         if(aux.DownloadsConfig.Request==false){
             process_downloads_mangas(null,null);
         }
@@ -361,8 +420,11 @@ async function process_downloads_mangas(Acao,Dado){
         }
         return false;
     }else{
+        //(Farol= Controle do usuario, Fila de Download, Processando)
         if(aux.DownloadsConfig.Farol && (aux.DownloadsConfig.Fila).length>0 && aux.DownloadsConfig.Request==false){
+            //Visamos que um download esta sendo feito.
             aux.DownloadsConfig.Request = true;
+            //Verificar se a capa e a pasta ja existem
             if(!(aux.Biblioteca).includes(aux.DownloadsConfig.Fila[0].Nome)){
                 await WebApp.CreateDir(aux.Pasta+'/mangas/'+aux.DownloadsConfig.Fila[0].Nome);
                 await WebApp.SaveFile(`${aux.Pasta}/mangas/${aux.DownloadsConfig.Fila[0].Nome}/capa.jpg`,aux.DownloadsConfig.Fila[0].Img);
@@ -371,9 +433,11 @@ async function process_downloads_mangas(Acao,Dado){
             for(let cont=0;cont<(aux.DownloadsConfig.Fila[0].Sources).length;cont++){
                 if(aux.DownloadsConfig.Fila[0].Sources[cont]!=null){
                     if(cont==0){
+                        //if(await BrasilSenpai.DirExist(aux.Pasta)==false){}
                         await WebApp.CreateDir(`${aux.Pasta}/mangas/${aux.DownloadsConfig.Fila[0].Nome}/${aux.DownloadsConfig.Fila[0].Capitulo}`);
                         console.log("Pasta capitlo OK");
                     }
+                    //save_file_manga
                     WebApp.SaveManga(`${cont}.jpg`,aux.DownloadsConfig.Fila[0].Sources[cont],`${aux.Pasta}/mangas/${aux.DownloadsConfig.Fila[0].Nome}/${aux.DownloadsConfig.Fila[0].Capitulo}/`);
                     aux.DownloadsConfig.Fila[0].Sources[cont] = null;
                     $("#SlideDownload .porcent").first().text(await porcentagem(cont+1,(aux.DownloadsConfig.Fila[0].Sources).length));
@@ -382,6 +446,7 @@ async function process_downloads_mangas(Acao,Dado){
                 }
             }
             console.log("Cap OK");
+            //Download concluido, vamos remover da lita
             aux.DownloadsConfig.Request=false;
             await process_downloads_mangas('delet',aux.DownloadsConfig.Fila[0]);
             return await process_downloads_mangas(null,null);
@@ -411,6 +476,7 @@ function GenFilter(Element){
 
 async function generos_pesquisa(pag){
     if(aux.AniManGenero!=""){
+        //aux.PaginacaoDetectCheck = false;
         if(pag==1){
             $('#genero ul').html("");
         }
@@ -421,6 +487,9 @@ async function generos_pesquisa(pag){
         M.toast({html:'Você precisa selecionar um genero!'});
     }
 }
+
+
+//Pesquis de animes/Mangas
 async function pesquisa(pag){
     aux.Pag = pag;
     if(pag==1){
@@ -428,7 +497,12 @@ async function pesquisa(pag){
         $("#pesquisa ul").html("");
     }
     await aux.Fonts[aux.Type][aux.AniManSource[aux.Type]].Pesquisa(aux.Pag);
+    //Na parte de pequisa, todo fluxo vai para sinopse.
 }
+
+
+
+//Exibir alertas de erros
 function alert(code){
     if(biblioteca_alerts[code]==undefined){
         $('#alert .modal-content').html(`
@@ -441,14 +515,18 @@ function alert(code){
     }
     $('#alert').modal('open');
 }
+
+//Puxar fontes
 async function fontes(){
     aux.FontSelect = null;
     localStorage.setItem('Hist-'+aux.AniMan.Nome+'-'+aux.AniMan.Type, $("#list_epcap").val());
     $("#fontsopc").html("");
     historico($("#list_epcap").val());
+    //Parte para extração de paginas.
     if(aux.AniMan.Type=='Manga'){
         aux.Fonts['Manga'][aux.AniMan['IndexSource']].Sources($("#list_epcap").val());
     }else{
+        //Carrega todos links de video.
         loading(true);
         let HD,Strick;
         WebApp.Ajax($("#list_epcap").val(),''+async function(Code,Result){
@@ -478,6 +556,8 @@ async function blogger_extrair(html){
     html = JSON.parse('"'+html[0]+'"');
     return html;
 }
+
+//Exibir episodio ou manga, online ou download
 async function font_set(index){
     $(`#fontsopc a`).removeClass("deep-orange accent-4");
     $(`#fontsopc a[value='${index}']`).addClass("deep-orange accent-4");
@@ -487,7 +567,9 @@ async function font_set(index){
             alert(2);
             return null;
         }
+        //Definir se e uma subfonte ou não.
         if(aux.FontsVids[index][1]){
+            //loading(true);
             aux.FontsIndex = index;
             console.log(aux.FontsVids);
             WebApp.Ajax(aux.FontsVids[index][0],''+async function(Code,Result){
@@ -531,6 +613,7 @@ async function font_set(index){
                     aux.FireBase.push({name:"video_play",text:aux.FontsVids[index][0]});
                     setTimeout(function(){ 
                         aux.FireBase.remove(function(error){
+                            //do stuff after removal
                           });
                     }, 3000);
                 }else{
@@ -553,6 +636,8 @@ function Make_Url_Manga(index,Nome,Cap){
     Nome = Nome.split('#cap#').join(Cap);
     return Nome;
 }
+
+//Processamento de mangás
 async function Ler_Baixar_Mangas(Sorces){
     if($("#sinopse nav .downplay").attr("value")=="false"){
         var temp = new Object();
@@ -572,6 +657,10 @@ async function Ler_Baixar_Mangas(Sorces){
         }
     }
 }
+
+/*
+    action: exist,add_delet,update
+*/
 async function favoritos(Action){
     if(Action=="update"){
         if(localStorage.getItem('Favoritos')===null){
@@ -639,6 +728,8 @@ function cover_height(){
         });
     }
 }
+
+//Processar favoritos
 async function swap_fav(Type){
     $('#anime_manga_fav ul').html('');
     aux.Type = Type;
@@ -664,6 +755,8 @@ async function swap_fav(Type){
         aux.Fonts[aux.Favoritos[cont].Type][aux.Favoritos[cont].IndexSource].Sinopse(aux.Favoritos[cont].Link);
     });
 }
+
+//Controlador de telas
 async function screen(x){
     M.Toast.dismissAll();
     $('.sidenav').sidenav('close');
@@ -681,6 +774,7 @@ async function screen(x){
 function voltar(){
     if((aux.Screen).length>1){
         if(aux.Screen[(aux.Screen).length-1]=='leitor'){
+            //WebApp.StatusBar('true');
         }
         (aux.Screen).splice((aux.Screen).length-1, 1);
     }else{
@@ -689,6 +783,8 @@ function voltar(){
     $('.modal').modal('close');
     screen(aux.Screen[(aux.Screen).length-1]);
 }
+
+//Carregar Historico
 async function historico(link){
     if(link==null){
         if(localStorage.getItem("LinkHistorico")!=null){
@@ -711,9 +807,11 @@ async function load_cap_ep(CapEp){
     $("#fontsopc").html("");
     $(CapEp).addClass("visited");
     historico($(CapEp).attr("value"));
+    //Parte para extração de paginas.
     if(aux.AniMan.Type=='Manga'){
         aux.Fonts['Manga'][aux.AniMan['IndexSource']].Sources($(CapEp).attr("value"));
     }else{
+        //Carrega todos links de video.
         loading(true);
         let HD,Strick;
         WebApp.Ajax($(CapEp).attr("value"),''+async function(Code,Result){
@@ -732,7 +830,11 @@ async function load_cap_ep(CapEp){
     }
     interstitialShow()
 }
+
+
+//Carregar sinopse anime/manga
 async function sinopse(){
+    //Registramos o index da fonte.
     if(aux.AniManIndex_Fav!==null){
         aux.AniMan['IndexSource'] = aux.AniManIndex_Fav;
         aux.AniManIndex_Fav = null;
@@ -785,8 +887,10 @@ async function sinopse(){
 
     if(episodio.cap || aux.AniMan.Type=="Manga"){
         $("#epcap .cap").show();
+        //$("#sinopse .type_ep").text("Capitulos.");
     }else{
         $("#epcap .cap").hide();
+        //$("#sinopse .type_ep").text("Episodios/Ovas.");
     }
 
     $("#sinopse .descricao").text(aux.AniMan.Descricao);
@@ -815,6 +919,8 @@ async function mode_downloadassistir(){
         M.toast({html:'Modo assistir ativado!'});
     }
 }
+
+//Carregar capitulos da fonte selecionada
 async function FontCaps(index){
     let cap = 1;
     loading(true);
@@ -837,6 +943,8 @@ async function FontCaps(index){
         loading(false);
     });
 }
+
+//Troca de sistema de Animes/Manga
 async function swap(Type){
     $('#anime_manga_lac .page-content').html('');
     aux.Type = Type;
@@ -872,12 +980,38 @@ async function swap(Type){
     }
     return true;
 }
+
+/*
+    ajax = Requisitar dados de uma url. (url)
+    apk_version = Versão do APK. (null)
+    save_file = Salva arquivo. (/diretorio/nome.png,LINK)
+    exit = Fecha app. (null)
+    arquivo_devar = Deleta um arquivo. (Diretorio/arquivos.png)
+    arquivo_liste = Retorna lista de todos arquivos, (extensão (*),diretorio)
+    dir_liste = Listar aquivos. (Diretorio)
+    dir_exist = Exist diretorio,Diretorio
+    dir_creat = Cria diretorio,Diretorio
+    dir_devar = Deletar pasta,Diretorio
+    status_bar = FullScreenn,null
+    open_link = Abre um link,url
+    save_file_manga = Salva arquivo. (/diretorio/nome.png,LINK)
+    download = adiciona download ao status bar,(/xx/xx/nome.png,link)
+    ads = mostra anuncio, (interstial,offerwall,rewarded,specialoffer)
+    analytics = info, (inicio,sinopse,animexx)
+*/
+
+
+//Somente android pode chamar essa função
 function android_set(Dado){
     aux.call_result = Dado;
 }
+
+//Calcular porcentagem
 async function porcentagem(partialValue, totalValue) {
     return ((100 * partialValue) / totalValue ) | 0;
 }
+
+//Modal de progresso
 async function progress(Procent){
     $('#progress .determinate').width(Procent+'%');
     if(Procent<100){
@@ -927,11 +1061,16 @@ function photoswip_open(){
     aux.PhotoSwipe_gallery.options.closeOnVerticalDrag = false;
     aux.PhotoSwipe_gallery.options.pinchToClose = false;
 }
+
+//Dormi
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-
+//Decodifica para UTF8
+function htmlDecode(value) {
+    return $('<div/>').html(value).text();
+}
 
 function HtmlToVideo(html){
     let Video =[
@@ -955,6 +1094,8 @@ function HtmlToVideo(html){
         temp = 'http'+temp;
         pilha_src.push(temp);
     }
+
+    //Pesquisar quais são as fontes de video
     for(j=0;j<pilha_src.length;j++){
         for(k=0;k<Video.length;k++){
             if((pilha_src[j]).includes(Video[k][0])){
@@ -968,6 +1109,8 @@ function HtmlToVideo(html){
     console.log(pilha_src_final);
     return pilha_src_final;
 }
+
+//Transforma texto em dados
 //One Piece,OVA,5
 function tratamento(txt,biblioteca){
     var EpTratamento = [' ', ':','-'] 
@@ -991,5 +1134,4 @@ function tratamento(txt,biblioteca){
         }
     }
     return null;
-}
 }

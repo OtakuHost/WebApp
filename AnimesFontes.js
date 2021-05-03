@@ -1,3 +1,4 @@
+function load_fonts_Animes(){
     aux.BibliotecaIdioma['PT-Br'] = [
         {
             'par':[' - Episodio ',' - Episódio ',' – Episódio – ',' – Episódio ',' – Episodio ',' Episódio – ',' Episódio - ',' Episódio ',' Episodio '],
@@ -543,3 +544,4 @@
             }
         }
     ];
+}

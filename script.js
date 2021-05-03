@@ -1,3 +1,6 @@
+function(){
+//Variavel usada para obter uma resposta
+//file:///android_asset/index.html
 aux.call_result = null;
 aux.Screen = new Array();
 (aux.Screen).push('lancamentos');
@@ -105,14 +108,16 @@ $(document).ready(async function(){
 
     //Carregar fontes
     WebApp.Ajax('https://raw.githubusercontent.com/otakuhostapp/otakuhost/master/AnimesFontes.js',''+async function(Code,Result){
+        console.log("Carregando dados..... Resposta: "+Code);
         eval(Result);
-        load_fonts_Animes();
+        
     });
 
     //Carregar fontes
     WebApp.Ajax('https://raw.githubusercontent.com/otakuhostapp/otakuhost/master/MangasFontes.js',''+async function(Code,Result){
+        console.log("Carregando dados..... Resposta: "+Code);
         eval(Result);
-        load_fonts_Mangas();
+        console.log("Carregando dados..... OK");
     });
     
     screen('lancamentos');
@@ -1071,10 +1076,7 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-//Decodifica para UTF8
-function htmlDecode(value) {
-    return $('<div/>').html(value).text();
-}
+
 
 function HtmlToVideo(html){
     let Video =[
@@ -1138,4 +1140,5 @@ function tratamento(txt,biblioteca){
         }
     }
     return null;
+}
 }

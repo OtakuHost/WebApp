@@ -1,4 +1,3 @@
-'use strict';
 var aux = new Object();
 //Variavel usada para obter uma resposta
 //file:///android_asset/index.html

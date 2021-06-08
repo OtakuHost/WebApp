@@ -1,0 +1,290 @@
+* {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: -moz-none;
+    -o-user-select: none;
+    user-select: none;
+}
+#toast-container .toast::after {
+    font-family: 'Material Icons';
+    content: "close";
+    -webkit-font-feature-settings: 'liga';
+    color: #dd2c00;
+    font-size: 1.5rem;
+    font-weight: 300;
+    float: right;
+    padding-left: 3rem;
+}
+.nav-botton{
+    position: absolute;
+    bottom: 0px;
+    z-index: 2;
+}
+#Cap_Ep_Ova .visited {
+    background: #23d160;
+    color: #fff;
+}
+
+#Cap_Ep_Ova a{
+    min-width: 23%;
+}
+
+.btn-CapEp{
+    border-radius: 22px;
+    background-color: white;
+    color: #212121;
+    min-width: 18%;
+    margin: 0.5%;
+}
+#sinopse .descricao{
+    margin-right:1%;
+    margin-left:1%;
+    text-align: justify;
+    text-justify: inter-word;
+}
+#fonts_mangas{
+    margin-bottom: 1%;
+}
+.name_commt1{
+    color: #dd2c00;
+}
+.screen{
+    display: none;
+}
+#lancamentos{
+    display: block;
+}
+.isFav{
+    border: 1px solid;
+    border-color: #dd2c00;
+}
+body {
+    background:#333;
+}
+.stat {
+    position: absolute;
+    z-index: 10;
+    color: #FFF;
+    padding: 3px 6px;
+    font-size: 10px;
+    border-radius: 3px;
+    top: 2px;
+}
+.stat2 {
+    right: 2px;
+}
+.recobox {
+    margin-bottom: 20px;
+    padding: 5px;
+    background-image: linear-gradient(to bottom, #E8E8E8 0px, #F5F5F5 100%);
+    background-repeat: repeat-x;
+    border: 1px solid #DBDBDB;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.05) inset, 0px 1px 0px rgba(255, 255, 255, 0.1);
+}
+.anim {
+    border: 1px solid #CCC;
+    border-radius: 3px;
+    position: relative;
+}
+
+.anim a {
+    display: block;
+    font-size: 0px;
+}
+.anim img {
+    width: 100%;
+    height: 100%;
+}
+.lista_animan .titulo {
+    text-align: center;
+    margin: 0px;
+    font-size: 11px;
+    background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.6);
+    color: #FFF;
+    position: absolute;
+    bottom: 0px;
+    z-index: 200;
+    padding: 4px 6px 5px;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+span.badge.novo{
+    float: left;
+}
+
+#lancamentos .tabs,.card, #lancamentos .tabs .tab a,#favoritos .tabs,.card, #favoritos .tabs .tab a{
+    background-color: transparent;
+    color:white;
+}
+#lancamentos .card,#favoritos .card{
+    margin: 0;
+}
+#lancamentos .card .card-content,#favoritos .card .card-content{
+    padding: 0px; 
+}
+nav{
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+#slide-out{
+    width: 70%;
+}
+.background img{
+    opacity: 0.3;
+    width: 100%;
+    height: 100%;
+}
+.row .col{
+    padding: 1%;
+}
+
+.sidenav .row{
+    margin-bottom: 0px;
+}
+.sidenav .user-view {
+    margin-bottom: 0px;
+    padding: 2% 2% 0;
+}
+.sidenav .user-view .name{
+    margin-top: 1%;
+}
+.sidenav li>a, .sidenav li>a>i.material-icons,.sidenav .subheader{
+    color: white;
+}
+.lista_animan img{
+    width: 100%;
+    height: 100%;
+}
+.card .card-image{
+    height: 100%;
+}
+.btn_menu{
+    float: left;
+    position: relative;
+    z-index: 1;
+    height: 56px;
+    margin: 0 18px;
+}
+#sinopse p,#sinopse h5{
+    margin: 0px;
+    padding: 0px;
+}
+#sinopse .chip{
+    background-color: #212121;
+    color: white;
+}
+#sinopse .descricao, #sinopse .comments{
+    max-height: 300px;
+    overflow: scroll;
+}
+#sinopse .background{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.1;
+    z-index: -1;
+}
+#alert{
+    z-index: 999;
+}
+#fontsopc a{
+    margin: 1%;
+    width: 48%;
+}
+#epcap .switch{
+    margin: 3%;
+}
+#leitor img{
+    width: 98%;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+input[type=text]{
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 100%;
+    color:white;
+}
+#SlideDownload{
+    width: 55%;
+}
+#SlideMenu, #SlideGenero{
+    width: 70%;
+}
+#usuario .email_{
+    width: 100%;
+}
+#usuario .logs, #usuario .pontos{
+    width: 38%;
+}
+#usuario .vip, #usuario .foto_nome{
+    width: 56%;
+}
+#usuario .material-icons{
+    font-size: 16px;
+    line-height: 32px;
+    margin-right: 0;
+}
+#usuario .chip{
+    background-color: rgba(255,255,255,0.8);
+    color: rgba(0,0,0,0.8);
+}
+#epcap select{
+    color:black;
+}
+#SlideDownload .cover,#SlideDownload .chip{
+    width: 100%;
+    text-align: center;
+}
+#SlideDownload li{
+    background-color: transparent;
+}
+#SlideDownload{
+    border: 0;
+}
+#interstitial{
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    position: absolute;
+    display: none;
+    top: 0;
+    z-index: 1099;
+}
+#interstitial iframe, #interstitial video{
+    width: 100%;
+    height: 325px;
+}
+#interstitial .modal-content{
+    position: absolute;
+}
+#interstitial .close{
+    margin: 1%;
+}
+#pesquisa,#genero,#leitor,#sinopse, #noticias,#biblioteca,#sinopse,#temporada{
+    overflow-y: scroll;
+    height: 93vh;
+}
+
+#lancamentos .corpo,#favoritos .corpo{
+    overflow-y: scroll;
+    height: 87vh;
+}
+#noticias .corpo img,#noticias .corpo iframe,#noticias .corpo video{
+    width: 100%;
+}
+#sinopse .collection .collection-item{
+    background-color: transparent;
+}
+#sinopse .collection{
+    border: 0;
+    border-bottom: 1px solid #e0e0e0;
+}

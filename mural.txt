@@ -1,0 +1,13 @@
+<div class="row">
+    <div class="col s12 m12 l12">
+      <div class="card red darken-4">
+        <div class="card-content white-text">
+            <span class="card-title">Versão 6.4</span>
+            <p>
+                Nesta nova versão foi feito uma mudança no sistema de leitura, antes você selecionava capitulo e so depois a fonte, agora você seleciona a fonte e dela são carregados capitulos disponibilizados nela.<br>
+                Caso queiram algum mangá que ainda não exista basta avisar via email.
+            </p>
+        </div>
+      </div>
+    </div>
+</div>

@@ -9,7 +9,7 @@ try {
   aux.Pasta = WebApp.DiretorioDownload()+'/Otaku Host';
 }
 catch(err) {
-  document.getElementById("demo").innerHTML = err.message;
+  console.log("IsNotApp");
 }
 aux.Type = 'Anime';
 aux.AniManGenero = "";

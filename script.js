@@ -5,7 +5,12 @@ var aux = new Object();
 aux.call_result = null;
 aux.Screen = new Array();
 (aux.Screen).push('lancamentos');
-aux.Pasta = WebApp.DiretorioDownload()+'/Otaku Host';
+try {
+  aux.Pasta = WebApp.DiretorioDownload()+'/Otaku Host';
+}
+catch(err) {
+  document.getElementById("demo").innerHTML = err.message;
+}
 aux.Type = 'Anime';
 aux.AniManGenero = "";
 aux.AniManIndex_Fav = null;

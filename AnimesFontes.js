@@ -30,7 +30,7 @@ function load_fonts_Animes(){
 
     aux.Fonts['Anime'] = [
         {
-            Nome:'&#10060; Anitube',
+            Nome:'Anitube',
             Link:'https://www.anitube.site',
             Idioma:'PT-Br',
             Lancamentos:function(){

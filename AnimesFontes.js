@@ -98,9 +98,9 @@ function load_fonts_Animes(){
             },
             TFontes:async function(Fontes){
                 if((Fontes[0]).includes("/0/bg.mp4")){
-                    let temp = Fontes[0];
-                    WebApp.Assistir("https://www.facebook.site/lixo.mp4");
-                    WebApp.UrlRedirect(shit, Fontes[0], ''+function(url){
+                    let temp = Fontes[0]+"";
+                    console.log("SomenteUrl? "+temp);
+                    WebApp.UrlRedirect("https://www.anitube.site/?s=One+Piece", temp, ''+function(url){
                         aux.FontsVids[aux.FontSelect][1] = false;
                         aux.FontsVids[aux.FontSelect][0] = url;
                     });

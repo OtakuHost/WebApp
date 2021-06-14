@@ -104,7 +104,7 @@ function load_fonts_Animes(){
                         aux.FontsVids[aux.FontSelect][1] = false;
                     });
                     await sleep(500);
-                    while(temp==aux.FontsVids[aux.FontSelect[0]){
+                    while(temp==aux.FontsVids[aux.FontSelect][0]){
                         await sleep(500);
                     }
                     return true;

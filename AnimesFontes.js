@@ -100,7 +100,10 @@ function load_fonts_Animes(){
                 if((Fontes[0]).includes("/0/bg.mp4")){
                     let temp = Fontes[0]+"";
                     console.log("SomenteUrl23? "+temp);
-                    WebApp.UrlRedirect("https://www.anitube.site/?s=One+Piece", temp, "console.log('foda...');");
+                    WebApp.UrlRedirect("https://www.anitube.site/?s=One+Piece", temp, ''+function(url){
+                        aux.FontsVids[aux.FontSelect][1] = false;
+                        aux.FontsVids[aux.FontSelect][0] = url;
+                    });
                     await sleep(500);
                     while(temp==aux.FontsVids[aux.FontSelect][0]){
                         await sleep(500);

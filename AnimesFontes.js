@@ -97,13 +97,18 @@ function load_fonts_Animes(){
                 loading(false); 
             },
             TFontes:async function(Fontes){
-                for(let cont=0;cont<Fontes.length;cont++){
-                    //Resolve to direct source
-                    if((Fontes[cont][0]).includes("/0/bg.mp4")){
-                        Fontes[cont][0]
+                if((Fontes[0]).includes("/0/bg.mp4")){
+                    let temp = Fontes[0];
+                    WebApp.url_redirect("https://www.anitube.site/?s=One+Piece",Fontes[0],function(url){
+                        aux.FontsVids[aux.FontSelect[0] = url;
+                        aux.FontsVids[aux.FontSelect[1] = false;
+                    });
+                    await sleep(500);
+                    while(temp==aux.FontsVids[aux.FontSelect[0]){
+                        await sleep(500);
                     }
+                    return true;
                 }
-                return Fontes;
             },
             Sinopse:function(Link){
                 aux.AniMan = new Object();

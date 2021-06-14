@@ -568,8 +568,6 @@ async function font_set(index){
     $(`#fontsopc a[value='${index}']`).addClass("deep-orange accent-4");
     aux.FontSelect = index;
     if(aux.Type=='Anime'){
-	alert(JSON.stringify(aux.FontsVids[index]));
-	return null;
         if(aux.FontsVids[index][0]==null){
             alert(2);
             return null;
@@ -1086,7 +1084,8 @@ function HtmlToVideo(html){
         ['video.g?token=',true],
         ['videoplayback',false],
         ['.mp4',false],
-        ['.MP4',false]
+        ['.MP4',false],
+	['anitube.site',false]
     ];
     let pilha_src= new Array(),
         pilha_src_final = new Array(),

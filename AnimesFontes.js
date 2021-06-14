@@ -96,6 +96,15 @@ function load_fonts_Animes(){
                 M.toast({html:`Esa fonte se encontra em manutenção...`});
                 loading(false); 
             },
+            TFontes:async function(Fontes){
+                for(let cont=0;cont<Fontes.length;cont++){
+                    //Resolve to direct source
+                    if((Fontes[cont][0]).includes("/0/bg.mp4")){
+                        Fontes[cont][0]
+                    }
+                }
+                return Fontes;
+            },
             Sinopse:function(Link){
                 aux.AniMan = new Object();
                 aux.AniMan['Link'] = Link;
@@ -260,6 +269,9 @@ function load_fonts_Animes(){
                     loading(false);
                 });
             },
+            TFontes:async function(Fontes){
+                return Fontes;
+            },
             Sinopse:function(Link){
                 aux.AniMan = new Object();
                 aux.AniMan['Link'] = Link;
@@ -382,6 +394,9 @@ function load_fonts_Animes(){
                     loading(false);
                 });
             },
+            TFontes:async function(Fontes){
+                return Fontes;
+            },
             Sinopse:function(Link){
                 aux.AniMan = new Object();
                 aux.AniMan['Link'] = Link;
@@ -500,6 +515,9 @@ function load_fonts_Animes(){
             Generos:function(Index){
                 M.toast({html:`Indisponivel nesta fonte!`});
                 loading(false);
+            },
+            TFontes:async function(Fontes){
+                return Fontes;
             },
             Sinopse:function(Link){
                 aux.AniMan = new Object();

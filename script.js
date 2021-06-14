@@ -568,6 +568,9 @@ async function font_set(index){
     $(`#fontsopc a[value='${index}']`).addClass("deep-orange accent-4");
     aux.FontSelect = index;
     if(aux.Type=='Anime'){
+	//Verificar se existe algum tratamento para fonte.
+	await aux.Fonts[aux.Type][aux.AniManSource[aux.Type]].TFontes(aux.FontsVids[index]);
+	    
         if(aux.FontsVids[index][0]==null){
             alert(2);
             return null;

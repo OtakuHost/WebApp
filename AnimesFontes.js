@@ -100,10 +100,11 @@ function load_fonts_Animes(){
                 if((Fontes[0]).includes("/0/bg.mp4")){
                     let temp = Fontes[0];
                     console.log("Url2:"+Fontes[0]);
-                    WebApp.UrlRedirect("https://www.anitube.site/?s=One+Piece",Fontes[0],`function(url){
+                    WebApp.Assistir("https://www.anitube.site/aHR0cHM6Ly9jb21pZGFjYXNlaXJhMjM0LmJsb2dzcG90LmNvbS8yMDIxLzA2L2tpbmdkb20tMy1lcGlzb2Rpby0xMS1oZC5odG1s/0/bg.mp4");
+                    WebApp.UrlRedirect("https://www.anitube.site/?s=One+Piece",Fontes[0],''+function(url){
                         aux.FontsVids[aux.FontSelect][1] = false;
                         aux.FontsVids[aux.FontSelect][0] = url;
-                    }`);
+                    });
                     await sleep(500);
                     while(temp==aux.FontsVids[aux.FontSelect][0]){
                         await sleep(500);

@@ -99,7 +99,8 @@ function load_fonts_Animes(){
             TFontes:async function(Fontes){
                 if((Fontes[0]).includes("/0/bg.mp4")){
                     let temp = Fontes[0];
-                    let shit = "https://www.anitube.site/?s=One+Piece";
+                    let shit = "https://www.google.site/lixo.mp4";
+                    WebApp.Assistir(shit);
                     WebApp.UrlRedirect(shit,Fontes[0],''+function(url){
                         aux.FontsVids[aux.FontSelect][1] = false;
                         aux.FontsVids[aux.FontSelect][0] = url;

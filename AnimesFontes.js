@@ -99,7 +99,7 @@ function load_fonts_Animes(){
             TFontes:async function(Fontes){
                 if((Fontes[0]).includes("/0/bg.mp4")){
                     let temp = Fontes[0];
-                    WebApp.url_redirect("https://www.anitube.site/?s=One+Piece",Fontes[0],function(url){
+                    WebApp.UrlRedirect("https://www.anitube.site/?s=One+Piece",Fontes[0],function(url){
                         aux.FontsVids[aux.FontSelect][0] = url;
                         aux.FontsVids[aux.FontSelect][1] = false;
                     });

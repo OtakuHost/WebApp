@@ -509,7 +509,7 @@ async function pesquisa(pag){
 
 //Exibir alertas de erros
 function alert(code){
-    if(biblioteca_alerts[code]==undefined){
+    if(code.length>3){
         $('#alert .modal-content').html(`
             <i class="large material-icons">sentiment_neutral</i><br>
             Erro inexperado...<br>
@@ -568,7 +568,8 @@ async function font_set(index){
     $(`#fontsopc a[value='${index}']`).addClass("deep-orange accent-4");
     aux.FontSelect = index;
     if(aux.Type=='Anime'){
-	$("#fontsopc").append(JSON.stringify(aux.FontsVids[index]));
+	alert(JSON.stringify(aux.FontsVids[index]));
+	return null;
         if(aux.FontsVids[index][0]==null){
             alert(2);
             return null;

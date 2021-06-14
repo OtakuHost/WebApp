@@ -576,7 +576,6 @@ async function font_set(index){
         if(aux.FontsVids[index][1]){
             //loading(true);
             aux.FontsIndex = index;
-            console.log(aux.FontsVids);
             WebApp.Ajax(aux.FontsVids[index][0],''+async function(Code,Result){
                 let temp = null;
                 if(Code==200){
@@ -1079,13 +1078,13 @@ function htmlDecode(value) {
 
 function HtmlToVideo(html){
     let Video =[
+	['/0/bg.mp4',false],
         ['bg.mp4',true],
         ['?contentId=',true],
         ['video.g?token=',true],
         ['videoplayback',false],
         ['.mp4',false],
-        ['.MP4',false],
-	['anitube.site',false]
+        ['.MP4',false]
     ];
     let pilha_src= new Array(),
         pilha_src_final = new Array(),

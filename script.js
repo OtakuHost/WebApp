@@ -186,14 +186,24 @@ $(document).ready(async function(){
     }else{
         $("#Fontes_Config").modal('open');
     }
-    WebApp.Ajax('https://otakuhostapp.blogspot.com/p/versaoattt.html',''+function(Code,Result){
-        Result = $($.parseHTML(htmlDecode(Result)));
-        if(WebApp.AppVersion()+0<Result.find('#versao').text()){
-            $("#nova_versao h5").text("Otaku Host V"+Result.find('#versao').text());
-            $("#nova_versao .desc").html(Result.find('#info').html());
-            $("#nova_versao .link").attr('href',Result.find('#link').text());
-            $("#nova_versao").modal("open");
-        }
+    WebApp.Ajax('https://otakuhost.github.io/WebApp/version.json',''+function(Code,Result){
+        Result = JSON.parse(Result);
+        if(WebApp.AppVersion()+0<Result['versionApk']){
+		//Aviso APK atualizar
+		M.toast("AttApk...");
+        	$("#nova_versao h5").text("Otaku Host V"+Result.find('#versao').text());
+            	$("#nova_versao .desc").html(Result.find('#info').html());
+            	$("#nova_versao .link").attr('href',Result.find('#link').text());
+            	$("#nova_versao").modal("open");
+        }else if(WebApp.GetBD("WebAppVersion",0)<Result.versionWebApp){
+		//Atualizar AppOffline
+		M.toast("AttWApp...");
+		WebApp.SetBD("WebAppVersion",Result.versionWebApp);
+		WebApp.Ajax('https://otakuhost.github.io/WebApp/',''+function(Code,Html){
+			WebApp.SetBD("servidorHtml",Html);
+			WebApp.ClearCache();
+		});
+	}
     });
 
     //WebPlayer email

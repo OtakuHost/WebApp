@@ -204,7 +204,7 @@ $(document).ready(async function(){
 		console.log("Html: Iniciado atts html");
 		WebApp.SetBD("WebAppVersion",Result.versionWebApp);
 		WebApp.Ajax('https://otakuhost.github.io/WebApp/',''+function(Code,Html){
-			WebApp.SetBD("servidorHtml",htmlDecode(Html);
+			WebApp.SetBD("servidorHtml",htmlDecode(Html));
 			WebApp.ClearCache();
 		});
 	}

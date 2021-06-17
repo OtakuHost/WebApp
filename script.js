@@ -188,7 +188,7 @@ $(document).ready(async function(){
     }
 	console.log("Html: Iniciado atts");
     WebApp.Ajax('https://otakuhost.github.io/WebApp/version.json',''+function(Code,Result){
-        Result = JSON.parse(Result);
+        Result = JSON.parse(htmlDecode(Result));
         if(WebApp.AppVersion()+0<Result['versionApk']){
 		//Aviso APK atualizar
 		M.toast("AttApk...");
@@ -204,7 +204,7 @@ $(document).ready(async function(){
 		console.log("Html: Iniciado atts html");
 		WebApp.SetBD("WebAppVersion",Result.versionWebApp);
 		WebApp.Ajax('https://otakuhost.github.io/WebApp/',''+function(Code,Html){
-			WebApp.SetBD("servidorHtml",Html);
+			WebApp.SetBD("servidorHtml",htmlDecode(Html);
 			WebApp.ClearCache();
 		});
 	}

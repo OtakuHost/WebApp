@@ -186,11 +186,14 @@ $(document).ready(async function(){
     }else{
         $("#Fontes_Config").modal('open');
     }
+	console.log("Html: Iniciado atts");
     WebApp.Ajax('https://otakuhost.github.io/WebApp/version.json',''+function(Code,Result){
         Result = JSON.parse(Result);
         if(WebApp.AppVersion()+0<Result['versionApk']){
 		//Aviso APK atualizar
 		M.toast("AttApk...");
+		console.log("Html: Att apk necessario");
+		return null;
         	$("#nova_versao h5").text("Otaku Host V"+Result.find('#versao').text());
             	$("#nova_versao .desc").html(Result.find('#info').html());
             	$("#nova_versao .link").attr('href',Result.find('#link').text());
@@ -198,6 +201,7 @@ $(document).ready(async function(){
         }else if(WebApp.GetBD("WebAppVersion",0)<Result.versionWebApp){
 		//Atualizar AppOffline
 		M.toast("AttWApp...");
+		console.log("Html: Iniciado atts html");
 		WebApp.SetBD("WebAppVersion",Result.versionWebApp);
 		WebApp.Ajax('https://otakuhost.github.io/WebApp/',''+function(Code,Html){
 			WebApp.SetBD("servidorHtml",Html);

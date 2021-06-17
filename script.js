@@ -203,10 +203,9 @@ $(document).ready(async function(){
 		M.toast("AttWApp...");
 		console.log("Html: Iniciado atts html");
 		WebApp.SetBD("WebAppVersion",Result.versionWebApp);
-		WebApp.Ajax('https://otakuhost.github.io/WebApp/',''+function(Code,Html){
-			WebApp.SetBD("servidorHtml",htmlDecode(Html));
-			WebApp.ClearCache();
-		});
+		WebApp.SetBD("servidorHtml",$("html").html());
+		sleep(500);
+		WebApp.ClearCache();
 	}
     });
 

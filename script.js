@@ -884,6 +884,7 @@ async function sinopse(){
     $("#epcap .cap").html("");
     $("#Cap_Ep_Ova").html("");
     for(let cont=0;cont<(aux.AniMan.Episodios).length;cont++){
+        console.log(aux.AniMan.Episodios[cont].Link);
         episodio.ep = true;
         $("#epcap .ep").append(`<option value="${aux.AniMan.Episodios[cont].Link}">${aux.AniMan.Episodios[cont].Ep}</option>`);
         if((aux.LinkHistorico).includes(aux.AniMan.Episodios[cont].Link)){

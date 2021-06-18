@@ -128,9 +128,10 @@ $(document).ready(async function(){
         }
     }
    
+    
     //Carregar dados de Download, caso usuario tenha fechado app sem terminar todos download'
-    if(localStorage.getItem("DownloadsFila")!=null){
-        aux.DownloadsConfig.Fila = JSON.parse(localStorage.getItem("DownloadsFila"));
+    if(WebApp.GetBD("DownloadsFila",0)!=0){
+        aux.DownloadsConfig.Fila = JSON.parse(WebApp.GetBD("DownloadsFila",0));
     }
     
     //Controlador de rolagem de paginas generos
@@ -174,14 +175,14 @@ $(document).ready(async function(){
         `);
     }
 
-    if(localStorage.getItem("AniManSource_Manga")!=null){
-        aux.AniManSource['Manga'] = localStorage.getItem("AniManSource_Manga");
+    if(WebApp.GetBD("AniManSource_Manga",0)==0){
+        aux.AniManSource['Manga'] = WebApp.GetBD("AniManSource_Manga",0);
         $("#list_MangaSources").val(aux.AniManSource['Manga']).attr("selected", "selected");
     }else{
         $("#Fontes_Config").modal('open');
     }
-    if(localStorage.getItem("AniManSource_Anime")!=null){
-        aux.AniManSource['Anime'] = localStorage.getItem("AniManSource_Anime");
+    if(WebApp.GetBD("AniManSource_Anime",0)==0){
+        aux.AniManSource['Anime'] = WebApp.GetBD("AniManSource_Anime",0);
         $("#list_AnimesSources").val(aux.AniManSource['Anime']).attr("selected", "selected");
     }else{
         $("#Fontes_Config").modal('open');
@@ -210,10 +211,10 @@ $(document).ready(async function(){
     });
 
     //WebPlayer email
-    if(localStorage.getItem("Email")!=null){
-        $("#email_webPlayer").val(localStorage.getItem("Email"));
-        $("#web_PlayerModal p").html(`<b>Codigo</b>: `+localStorage.getItem("Codigo"));
-        aux.FireBase = new Firebase('https://otakuhostapp-d36e8.firebaseio.com/user/'+md5(localStorage.getItem("Email"))+'-'+localStorage.getItem("Codigo"));
+    if(WebApp.GetBD("Email",0)==0){
+        $("#email_webPlayer").val(WebApp.GetBD("Email",0));
+        $("#web_PlayerModal p").html(`<b>Codigo</b>: `+WebApp.GetBD("Codigo",0));
+        aux.FireBase = new Firebase('https://otakuhostapp-d36e8.firebaseio.com/user/'+md5(WebApp.GetBD("Email",0))+'-'+ WebApp.GetBD("Codigo",0));
     }
 
     await historico(null);
@@ -224,10 +225,10 @@ $(document).ready(async function(){
 
 async function email_set(){
     if(($("#email_webPlayer").val()).length>5){
-        localStorage.setItem("Email",$("#email_webPlayer").val());
-        localStorage.setItem("Codigo",Math.floor(Math.random() * 999) + 1 );
-        $("#web_PlayerModal p").html(`<b>Codigo</b>: `+localStorage.getItem("Codigo"));
-        aux.FireBase = new Firebase('https://otakuhostapp-d36e8.firebaseio.com/user/'+md5(localStorage.getItem("Email"))+'-'+localStorage.getItem("Codigo"));
+        WebApp.SetBD('Email',$("#email_webPlayer").val());
+        WebApp.SetBD('Codigo',Math.floor(Math.random() * 999)+1);
+        $("#web_PlayerModal p").html(`<b>Codigo</b>: `+WebApp.GetBD("Codigo",0));
+        aux.FireBase = new Firebase('https://otakuhostapp-d36e8.firebaseio.com/user/'+md5(WebApp.GetBD("Email",0))+'-'+WebApp.GetBD("Codigo",0));
     }
 }
 
@@ -235,10 +236,10 @@ async function configurar_fontes(){
     if($("#list_AnimesSources").val()=="null" || $("#list_MangaSources").val()=="null"){
         alert("Selecione uma fonte!");
     }else{
-        localStorage.setItem("AniManSource_Manga",$("#list_MangaSources").val());
-        localStorage.setItem("AniManSource_Anime",$("#list_AnimesSources").val());
-        aux.AniManSource['Manga'] = localStorage.getItem("AniManSource_Manga");
-        aux.AniManSource['Anime'] = localStorage.getItem("AniManSource_Anime");
+        WebApp.SetBD('AniManSource_Manga',$("#list_MangaSources").val());
+        WebApp.SetBD('AniManSource_Anime',$("#list_AnimesSources").val());
+        aux.AniManSource['Manga'] = WebApp.GetBD("AniManSource_Manga",0);
+        aux.AniManSource['Anime'] = WebApp.GetBD("AniManSource_Anime",0);
         aux.inicial['Manga'] = new Array();
         aux.inicial['Anime'] = new Array();
         $("#Fontes_Config").modal('close');
@@ -425,13 +426,13 @@ async function process_downloads_mangas(Acao,Dado){
         if(aux.DownloadsConfig.Request==false){
             process_downloads_mangas(null,null);
         }
-        localStorage.setItem('DownloadsFila', JSON.stringify(aux.DownloadsConfig.Fila));
+        WebApp.SetBD("DownloadsFila",JSON.stringify(aux.DownloadsConfig.Fila))
         return true;
     }else if(Acao=='delet'){
         for(let cont=0;cont<(aux.DownloadsConfig.Fila).length;cont++){
             if(aux.DownloadsConfig.Fila[cont].Nome==Dado.Nome && aux.DownloadsConfig.Fila[cont].Capitulo==Dado.Capitulo){
                 (aux.DownloadsConfig.Fila).splice(cont, 1);
-                localStorage.setItem('DownloadsFila', JSON.stringify(aux.DownloadsConfig.Fila));
+                WebApp.SetBD("DownloadsFila",JSON.stringify(aux.DownloadsConfig.Fila));
                 await update_download_view();
                 return true;
             }
@@ -537,7 +538,7 @@ function alert(code){
 //Puxar fontes
 async function fontes(){
     aux.FontSelect = null;
-    localStorage.setItem('Hist-'+aux.AniMan.Nome+'-'+aux.AniMan.Type, $("#list_epcap").val());
+    WebApp.SetBD('Hist-'+aux.AniMan.Nome+'-'+aux.AniMan.Type,$("#list_epcap").val());
     $("#fontsopc").html("");
     historico($("#list_epcap").val());
     //Parte para extração de paginas.
@@ -683,10 +684,10 @@ async function Ler_Baixar_Mangas(Sorces){
 */
 async function favoritos(Action){
     if(Action=="update"){
-        if(localStorage.getItem('Favoritos')===null){
+        if(WebApp.GetBD("Favoritos",0)==0){
             aux.Favoritos = new Array();
         }else{
-            aux.Favoritos = JSON.parse(localStorage.getItem('Favoritos'));
+            aux.Favoritos = JSON.parse(WebApp.GetBD("Favoritos",0));
         }
         aux.FavCheck = new Array();
         for(let cont=0;cont<(aux.Favoritos).length;cont++){
@@ -715,7 +716,7 @@ async function favoritos(Action){
             index=0;
             M.toast({html: `Removido!`});
         }
-        localStorage.setItem('Favoritos', JSON.stringify(aux.Favoritos));
+        WebApp.SetBD('Favoritos',JSON.stringify(aux.Favoritos));
         return null;
     }else{
         let check = false;
@@ -807,15 +808,15 @@ function voltar(){
 //Carregar Historico
 async function historico(link){
     if(link==null){
-        if(localStorage.getItem("LinkHistorico")!=null){
-            aux.LinkHistorico = (localStorage.getItem("LinkHistorico")).split(",");
+        if(WebApp.GetBD("LinkHistorico",0)==0){
+            aux.LinkHistorico = (WebApp.GetBD("LinkHistorico",0)).split(",");
         }else{
             aux.LinkHistorico = new Array();
         }
     }else{
         if(!(aux.LinkHistorico).includes(link)){
             (aux.LinkHistorico).push(link);
-            localStorage.setItem("LinkHistorico",(aux.LinkHistorico).join(","));
+            WebApp.SetBD('LinkHistorico',(aux.LinkHistorico).join(","));
         }
     }
 }
@@ -920,8 +921,8 @@ async function sinopse(){
         $("#sinopse nav .fav i").text('favorite_border');
     }
         
-    if(localStorage.getItem('Hist-'+aux.AniMan.Nome+'-'+aux.AniMan.Type)!=null){
-        $("#list_epcap").val(localStorage.getItem('Hist-'+aux.AniMan.Nome+'-'+aux.AniMan.Type)).attr("selected", "selected");
+    if(WebApp.GetBD('Hist-'+aux.AniMan.Nome+'-'+aux.AniMan.Type,0)==0){
+        $("#list_epcap").val(WebApp.GetBD('Hist-'+aux.AniMan.Nome+'-'+aux.AniMan.Type,0)).attr("selected", "selected");
     }
 
     $("#mode_epcap").prop("checked",false);
@@ -1156,5 +1157,4 @@ function tratamento(txt,biblioteca){
     }
     return null;
 }
-
 

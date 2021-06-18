@@ -1098,6 +1098,7 @@ function htmlDecode(value) {
 
 function HtmlToVideo(html){
     let Video =[
+	['noticia.php?token=',false],
 	['/0/bg.mp4',false],
         ['bg.mp4',true],
         ['?contentId=',true],

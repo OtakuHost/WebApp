@@ -200,14 +200,15 @@ $(document).ready(async function(){
             	$("#nova_versao .link").attr('href',Result.find('#link').text());
             	$("#nova_versao").modal("open");
         }else if(WebApp.GetBD("WebAppVersion",0)<Result.versionWebApp){
-		//Atualizar AppOffline
-		M.toast("AttWApp...");
-		console.log("Html: Iniciado atts html");
-		WebApp.SetBD("WebAppVersion",Result.versionWebApp);
-		WebApp.SetBD("servidorHtml",$("html").html());
-		sleep(500);
-		WebApp.ClearCache();
-	}
+            //Atualizar AppOffline
+            M.toast("AttWApp...");
+            WebApp.SetBD("WebAppVersion",Result.versionWebApp);
+            console.log("Html: Iniciado atts html");
+            WebApp.Ajax('https://otakuhost.github.io/WebApp/index.html',''+function(Code,Result){
+                WebApp.SetBD("servidorHtml",htmlDecode(Result));
+                WebApp.ClearCache();
+            });            
+	    }
     });
 
     //WebPlayer email
@@ -686,6 +687,7 @@ async function favoritos(Action){
     if(Action=="update"){
         if(WebApp.GetBD("Favoritos",0)==0){
             aux.Favoritos = new Array();
+            console.log("Favoritos vazio");
         }else{
             aux.Favoritos = JSON.parse(WebApp.GetBD("Favoritos",0));
         }

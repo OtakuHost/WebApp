@@ -110,6 +110,7 @@ function load_fonts_Animes(){
                     }
                     return true;
                 }
+                return false;
             },
             Sinopse:function(Link){
                 aux.AniMan = new Object();

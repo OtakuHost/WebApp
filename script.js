@@ -1164,7 +1164,7 @@ function tratamento(txt,biblioteca){
 }
 
 async function torrentStream(Hash){
-	WebApp.StreamTorrent(Hash,''function(ListFiles){
-		console.log("TorrentPuta: "+ListFiles);
+	WebApp.StreamTorrent(Hash,''async function(FileList){
+		console.log("TorrentPuta: "+FileList);
 	});
 }

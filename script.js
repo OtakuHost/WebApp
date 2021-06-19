@@ -1163,3 +1163,8 @@ function tratamento(txt,biblioteca){
     return null;
 }
 
+async function torrentStream(Hash){
+	WebApp.StreamTorrent(Hash,''function(ListFiles){
+		console.log("TorrentPuta: "+ListFiles);
+	});
+}

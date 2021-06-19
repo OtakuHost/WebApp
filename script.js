@@ -1170,9 +1170,9 @@ async function torrentStream(Hash){
 		$("#Cap_Ep_Ova").html("");
 		for(let cont=0;cont<(aux.AniMan.Episodios).length;cont++){
 			if((aux.LinkHistorico).includes(aux.AniMan.Episodios[cont])){
-			    $("#Cap_Ep_Ova").append(`<a onclick="WebApp.StreamTorrentPlay(${cont})" class="btn-small btn-CapEp visited">${aux.AniMan.Episodios[cont]}</a>`);
+			    $("#Cap_Ep_Ova").append(`<a onclick="WebApp.StreamTorrentPlay('${cont}')" class="btn-small btn-CapEp visited">${aux.AniMan.Episodios[cont]}</a>`);
 			}else{
-			    $("#Cap_Ep_Ova").append(`<a onclick="WebApp.StreamTorrentPlay(${cont})" class="btn-small btn-CapEp">${aux.AniMan.Episodios[cont]}</a>`);
+			    $("#Cap_Ep_Ova").append(`<a onclick="WebApp.StreamTorrentPlay('${cont}')" class="btn-small btn-CapEp">${aux.AniMan.Episodios[cont]}</a>`);
 			}
 		}
 	});

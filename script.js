@@ -1165,6 +1165,7 @@ function tratamento(txt,biblioteca){
 
 async function torrentStream(Hash){
 	WebApp.StreamTorrent(Hash,''+async function(FileList){
+		console.log("Torrent "+FileList);
 		aux.AniMan.Episodios = FileList.split(",");
 		$("#Cap_Ep_Ova").html("");
 		for(let cont=0;cont<(aux.AniMan.Episodios).length;cont++){

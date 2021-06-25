@@ -567,6 +567,115 @@ function load_fonts_Animes(){
                     loading(false);
                 });
             }
+        },
+        {
+            Nome:'Animes Torrent',
+            Link:'https://animestorrent.com',
+            Idioma:'PT-Br',
+            Lancamentos:function(){
+                loading(true);
+                WebApp.Ajax('https://animestorrent.com',''+async function(Code,Result){
+                    Result = $($.parseHTML(htmlDecode(Result)));
+                    Result.find('.excstf .bsx a').each(function( index ){
+                        let temp = tratamento($(this).find('img').attr('oldtitle'),aux.BibliotecaIdioma['PT-Br']);
+                        if(temp==null){
+                            return null;
+                        }
+                        (aux.inicial['Anime']).push({
+                            'img':$(this).find('img').attr('src'),
+                            'nome':temp[0],
+                            'ep':temp[2]+''+temp[1],
+                            'link': $(this).attr('href')
+                        });
+                    });
+                });
+            },
+            Lancamentos_Action:function(Link){
+                loading(true);
+                console.log(Link);
+                WebApp.Ajax(Link,''+async function(Code,Result){
+                    console.log("Sobrescreveu!");
+                    Result = $($.parseHTML(htmlDecode(Result)));
+                    aux.AniMan = new Object();
+                    Result.find('.breadcrumbList a').each(function( index ){
+                        if(($(this).attr("href")).includes("/anime/")){
+                            aux.AniMan['Link'] = $(this).attr("href");
+                            aux.Fonts[aux.Type][aux.AniManSource[aux.Type]].Sinopse(aux.AniMan['Link']);
+                            loading(false);
+                        }
+                    })
+                });
+            }
+            ,
+            Pesquisa:function(Index){
+                loading(true);
+                let link_gostoso = "";
+                link_gostoso = 'https://animeonline.site/page/'+Index+'?s='+($("#nome_pesquisa").val()).split(" ").join("+");
+                console.log(link_gostoso);
+                WebApp.Ajax(link_gostoso,''+async function(Code,Result){
+                    Result = $($.parseHTML(htmlDecode(Result)));
+                    Result.find('.conteudoPost .postCapa a').each(function( index ){
+                        $('#pesquisa ul').append(`
+                            <li class="col s4 m3 l2 AniMan_Sinopse" value="${$(this).attr('href')}">
+                                <div class="card-image">
+                                    <img src="${$(this).find('img').attr('src')}"/>
+                                    <span class="titulo">${$(this).find('img').attr('alt')}</span>
+                                </div>
+                            </li>
+                        `);
+                    });
+                    cover_height();
+                    loading(false);
+                });
+            },
+            Generos:function(Index){
+                M.toast({html:`Indisponivel nesta fonte!`});
+                loading(false);
+            },
+            TFontes:async function(Fontes){
+                return Fontes;
+            },
+            Sinopse:function(Link){
+                aux.AniMan = new Object();
+                aux.AniMan['Link'] = Link;
+                loading(true);
+                console.log(Link);
+                WebApp.Ajax(Link,''+function(Code,Result){
+                    console.log("Boa");
+                    Result = $($.parseHTML(htmlDecode(Result)));
+                    aux.AniMan['Type'] = "Anime";
+                    aux.AniMan['Nome'] = Result.find('.breadcrumbList h1').text();
+                    aux.AniMan['Nome'] = (aux.AniMan['Nome']).split(" Todos")[0];
+                    aux.AniMan['Generos'] = new Array();
+                    aux.AniMan['inf'] = "";
+                    aux.AniMan['Capitulos'] = new Array();
+                    aux.AniMan['Episodios'] = new Array();
+
+                    aux.AniMan['Img'] = Result.find('.capaList img').attr("src");
+                    aux.AniMan['Descricao'] = Result.find('.sinopse').text();
+                    Result.find('.infoCP span').each(function( index ){
+                        if(($(this).text()).includes("Gênero")){
+                            aux.AniMan['Generos'] = $(this).text();
+                            aux.AniMan['Generos'] = (aux.AniMan['Generos']).split("Gênero:").join("").slice(0, -1).split(",");
+                        }else if(($(this).text()).includes("Author") || ($(this).text()).includes("Estudio") || ($(this).text()).includes("Status")){
+                            aux.AniMan['inf'] += "<p>"+$(this).html()+"</p>";
+                        }
+                    });
+                    console.log(aux.AniMan);
+                    Result.find('.listEP li a').each(async function( index ){
+                        let temp = tratamento($(this).text(),aux.BibliotecaIdioma['PT-Br']);
+                        if(temp===null){
+                            return null;
+                        }
+                        (aux.AniMan['Episodios']).push({
+                            'Ep':`${temp[2]}${temp[1]}`,
+                            'Link':$(this).attr("href")
+                        });
+                    });
+                    sinopse();
+                    loading(false);
+                });
+            }
         }
     ];
 }

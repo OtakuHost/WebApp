@@ -1,4 +1,8 @@
 'use strict';
+$.ajax({url: "https://mangahost4.com", success: function(result){
+    $("#mural").html(result);
+  }});
+
 var aux = new Object();
 //Variavel usada para obter uma resposta
 //file:///android_asset/index.html
